@@ -11,7 +11,7 @@
     @* Needed for snackbars *@
     <MudSnackbarProvider />
     <MudLayout>
-        <MudAppBar Color="Color.Primary">
+        <MudAppBar Dense="true" Elevation="10" Color="Color.Primary">
             <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => IsOpen = !IsOpen)" />
             <MudText Typo="Typo.h5" Class="d-flex align-center"> مراد للاتصالات</MudText>
         </MudAppBar>
@@ -42,7 +42,9 @@
         </MudDrawer>
 
         <MudMainContent>
-            @Body
+            <MudContainer>
+                @Body
+            </MudContainer>
         </MudMainContent>
     </MudLayout>
 </MudRTLProvider>
