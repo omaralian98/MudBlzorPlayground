@@ -10,41 +10,34 @@
 
     @* Needed for snackbars *@
     <MudSnackbarProvider />
-    <MudLayout>
-        <MudAppBar Dense="true" Elevation="10" Color="Color.Primary">
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => IsOpen = !IsOpen)" />
-            <MudText Typo="Typo.h5" Class="d-flex align-center"> مراد للاتصالات</MudText>
-        </MudAppBar>
+    <MudLayout Style="top: 0px; position: absolute;">
+        <MudDrawer Color="Color.Inherit" Elevation="10" Style="overflow-y: clip;" @bind-Open="IsOpen" OpenMiniOnHover="true" Variant="@DrawerVariant.Mini" OverlayAutoClose="true" Fixed="true">
+            <MudNavMenu Color="Color.Success" Bordered="true" Margin="Margin.Normal" Dense="true">
+                <MudStack AlignItems="AlignItems.Center" Row="true" Style="margin: 10px 10px;">
+                    <MudImage Src="/MoradIcon.svg" />
+                    <MudText Typo="Typo.h5" Style="white-space: nowrap;overflow: hidden;">مراد للاتصالات</MudText>
+                </MudStack>
+                <MudDivider Class="my-3" />
 
-
-
-        <MudDrawer Elevation="10" Style="overflow-y: clip" OpenMiniOnHover="true" @bind-Open="IsOpen" Fixed="true" Variant="@DrawerVariant.Persistent" OverlayAutoClose="true">
-            <MudNavMenu Class="d-flex flex-column justify-content-between" Style="height: -webkit-fill-available;" Color="Color.Success" Bordered="true" Margin="Margin.Dense">
-                <MudElement>
-                    <MudImage Src="/MoradIcon.svg" Style="margin: 10px;" />
-                    <MudDivider Class="my-3" />
-
-                    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">الصفحة الرئيسية</MudNavLink>
-                    <MudNavGroup Title="الإدارة" Icon="@Icons.Material.Filled.Dashboard" Expanded="false">
-                        <MudNavLink Href="/dashboard/products" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.ShoppingBag">المنتجات</MudNavLink>
-                        <MudNavLink Href="/dashboard/products" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Category">التصنيفيات</MudNavLink>
-                        <MudNavLink Href="/dashboard/products" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Sell">المبيعات</MudNavLink>
-                    </MudNavGroup>
-                    <MudNavLink Href="/counter" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Countertops">المنتجات</MudNavLink>
-                    <MudNavLink Href="/counter" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Countertops">العداد</MudNavLink>
-                    <MudNavLink Href="/weather" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Cloud">الطقس</MudNavLink>
-
-                </MudElement>
-                <MudElement id="ModeSwitcher">
-                    <MudIcon @onclick="@(() => IsDarkMode = !IsDarkMode)" Icon="@(IsDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" />
-                </MudElement>
+                <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">الصفحة الرئيسية</MudNavLink>
+                <MudNavGroup Title="الإدارة" Icon="@Icons.Material.Filled.Dashboard" Expanded="true">
+                    <MudNavLink Href="/dashboard/products" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.ShoppingBag">المنتجات</MudNavLink>
+                    <MudNavLink Href="/dashboard/products" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Category">التصنيفيات</MudNavLink>
+                    <MudNavLink Href="/dashboard/products" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Sell">المبيعات</MudNavLink>
+                </MudNavGroup>
+                <MudNavLink Href="/counter" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Countertops">المنتجات</MudNavLink>
+                <MudNavLink Href="/counter" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Countertops">العداد</MudNavLink>
+                <MudNavLink Href="/weather" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Cloud">الطقس</MudNavLink>
             </MudNavMenu>
+            <MudElement id="ModeSwitcher">
+                <MudToggleIconButton Toggled="IsDarkMode" Color="Color.Surface" ToggledColor="Color.Warning" ToggledChanged="@(() => IsDarkMode = !IsDarkMode)" ToggledIcon="@Icons.Material.Filled.LightMode" Icon="@Icons.Material.Filled.DarkMode" />
+            </MudElement>
         </MudDrawer>
 
-        <MudMainContent>
-            <MudContainer>
+        <MudMainContent Style="padding-top: 0;">
+            <MudElement HtmlTag="div" Style="margin: 15px;">
                 @Body
-            </MudContainer>
+            </MudElement>
         </MudMainContent>
     </MudLayout>
 </MudRTLProvider>
@@ -52,9 +45,8 @@
 
 <style>
     #ModeSwitcher {
-        display: flex;
-        justify-content: flex-end;
-        margin: 5px 20px;
+        position: absolute;
+        bottom: 0;
     }
 </style>
 

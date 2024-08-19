@@ -1,9 +1,16 @@
 ﻿@page "/dashboard/products"
 
 <MudStack Row="false">
-    <MudElement>
-
-    </MudElement>
+    <div>
+        <MudStack Justify="Justify.SpaceBetween" Row="true">
+            <MudText Typo="Typo.h5">
+                المنتجات
+            </MudText>
+            <MudButton Variant="Variant.Filled" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary">
+                اضف منتج جديد 
+            </MudButton>
+        </MudStack>
+    </div>
 </MudStack>
 
 @code {
