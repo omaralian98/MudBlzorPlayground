@@ -10,9 +10,112 @@
                 اضف منتج جديد 
             </MudButton>
         </MudStack>
+        <MudStack Row="true">
+            <MudItem>
+                <MudAutocomplete Variant="Variant.Filled"
+                                 Dense="true"
+                                 Margin="Margin.Dense"
+                                 AdornmentIcon="@Icons.Material.Filled.Search"
+                                 AdornmentColor="Color.Primary"
+                                 T="string"
+                                 Label="بحث"
+                                 @bind-Value="Search" SearchFunc="SearchFunc" />
+            </MudItem>
+        </MudStack>
+        <MudStack Row="true" Wrap="Wrap.Wrap" Justify="Justify.SpaceEvenly">
+            @foreach (var product in ProductsList)
+            {
+                <MudCard Style="width: 300px;">
+                    <MudCardMedia Image="images/door.jpg" Height="200" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h4">#@product.Id-@product.Name</MudText>
+                        <MudText Typo="Typo.h5" Style="overflow-wrap:anywhere;">@product.Description</MudText>
+                        <MudText Typo="Typo.h6">@product.Price.ToString("C")</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            }
+        </MudStack>
     </div>
 </MudStack>
 
 @code {
+    public IEnumerable<Product> ProductsList =
+    [
+        new Product
+        {
+            Id = 1,
+            Name = "Test1",
+            Description = "Looooooooooooooooooooooooooooooooooooooooooooog og ofgodfogodfgo fd",
+            Price = 29.9m
+        },
+    new Product
+        {
+            Id = 2,
+            Name = "Test2",
+            Description = "Looooooooh j j jhj hj hhhooojhjfglgodfogodfgo fd",
+            Price = 959.9m
+        },
+    new Product
+        {
+            Id = 3,
+            Name = "Test3",
+            Description = "Looooooooooooooooooooooooooooooooooooooooooooog og ofgodfogodfgo fd",
+            Price = 89.9m
+        },
+    new Product
+        {
+            Id = 4,
+            Name = "Test4",
+            Description = "Looooooooooooooooooooooooooooooooooooooooooooog og ofgodfogodfgo fd",
+            Price = 29.9m
+        },
+    new Product
+        {
+            Id = 5,
+            Name = "Test5",
+            Description = "Looooooooh j j jhj hj hhhooojhjfglgodfogodfgo fd",
+            Price = 959.9m
+        },
+    new Product
+        {
+            Id = 6,
+            Name = "Test6",
+            Description = "Looooooooooooooooooooooooooooooooooooooooooooog og ofgodfogodfgo fd",
+            Price = 89.9m
+        },
+    new Product
+        {
+            Id = 7,
+            Name = "Test7",
+            Description = "Looooooooooooooooooooooooooooooooooooooooooooog og ofgodfogodfgo fd",
+            Price = 29.9m
+        },
+    new Product
+        {
+            Id = 8,
+            Name = "Test8",
+            Description = "Looooooooh j j jhj hj hhhooojhjfglgodfogodfgo fd",
+            Price = 959.9m
+        },
+    new Product
+        {
+            Id = 9,
+            Name = "Test9",
+            Description = "Looooooooooooooooooooooooooooooooooooooooooooog og ofgodfogodfgo fd",
+            Price = 89.9m
+        }
+    ];
+    public string Search { get; set; }
 
+    private async Task<IEnumerable<string>> SearchFunc(string? value, CancellationToken token)
+    {
+        if (value is null)
+            return [];
+        ProductsList = ProductsList.Where(x => x.Name.ToLower().Contains(value.ToLower()));
+        return [];
+    }
 }
