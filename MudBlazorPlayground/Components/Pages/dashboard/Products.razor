@@ -1,34 +1,47 @@
 ﻿@page "/dashboard/products"
 
-<MudStack Row="false">
-    <div>
-        <MudStack Justify="Justify.SpaceBetween" Row="true">
-            <MudText Typo="Typo.h5">
-                المنتجات
-            </MudText>
-            <MudButton Variant="Variant.Filled" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary">
-                اضف منتج جديد 
-            </MudButton>
-        </MudStack>
+<MudStack Row="false" Spacing="2">
+    <MudStack Justify="Justify.SpaceBetween" Row="true">
+        <MudText Typo="Typo.h5">
+            المنتجات
+        </MudText>
+        <MudButton Variant="Variant.Filled" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary">
+            اضف منتج جديد
+        </MudButton>
+    </MudStack>
+    <MudStack Row="true" Justify="Justify.SpaceBetween">
+        <MudItem xs="12" sm="6" md="4">
+            <MudAutocomplete Variant="Variant.Outlined"
+                             Dense="true"
+                             Margin="Margin.Dense"
+                             AdornmentIcon="@Icons.Material.Filled.Search"
+                             AdornmentColor="Color.Primary"
+                             IconSize="Size.Small"
+                             T="string"
+                             Placeholder="بحث..."
+                             @bind-Value="Search" SearchFunc="SearchFunc" />
+        </MudItem>
         <MudStack Row="true">
-            <MudItem>
-                <MudAutocomplete Variant="Variant.Filled"
-                                 Dense="true"
-                                 Margin="Margin.Dense"
-                                 AdornmentIcon="@Icons.Material.Filled.Search"
-                                 AdornmentColor="Color.Primary"
-                                 T="string"
-                                 Label="بحث"
-                                 @bind-Value="Search" SearchFunc="SearchFunc" />
-            </MudItem>
+            <MudToggleGroup @bind-Value="IsListView" T="bool" Color="Color.Primary" Size="Size.Small">
+                <MudToggleItem Value="@(true)">
+                    <MudIcon Icon="@Icons.Material.Outlined.List" Size="Size.Small" />
+                </MudToggleItem>
+                <MudToggleItem Value="@(false)">
+                    <MudIcon Icon="@Icons.Material.Outlined.Window" Size="Size.Small" />
+                </MudToggleItem>
+            </MudToggleGroup>
         </MudStack>
+    </MudStack>
+    @if (!IsListView)
+    {
         <MudStack Row="true" Wrap="Wrap.Wrap" Justify="Justify.SpaceEvenly">
-            @foreach (var product in ProductsList)
+            @foreach (var product in ProdcutsToView)
             {
-                <MudCard Style="width: 300px;">
+                <MudCard Style="width: 300px;" Elevation="5">
                     <MudCardMedia Image="images/door.jpg" Height="200" />
                     <MudCardContent>
-                        <MudText Typo="Typo.h4">#@product.Id-@product.Name</MudText>
+                        <MudText Typo="Typo.h3">@product.Id</MudText>
+                        <MudText Typo="Typo.h4">@product.Name</MudText>
                         <MudText Typo="Typo.h5" Style="overflow-wrap:anywhere;">@product.Description</MudText>
                         <MudText Typo="Typo.h6">@product.Price.ToString("C")</MudText>
                     </MudCardContent>
@@ -39,17 +52,21 @@
                 </MudCard>
             }
         </MudStack>
-    </div>
+    }
 </MudStack>
 
 @code {
-    public IEnumerable<Product> ProductsList =
+    public bool IsListView { get; set; } = false;
+
+    public IEnumerable<Product> ProdcutsToView { get; set; }
+
+    private IEnumerable<Product> ProductsList =
     [
         new Product
         {
             Id = 1,
             Name = "Test1",
-            Description = "Looooooooooooooooooooooooooooooooooooooooooooog og ofgodfogodfgo fd",
+            Description = "something that is made to be sold, usually something that is produced by an industrial process or, less commonly, something that is grown or obtained through farming:",
             Price = 29.9m
         },
     new Product
@@ -111,11 +128,23 @@
     ];
     public string Search { get; set; }
 
+    protected override void OnInitialized()
+    {
+        ProdcutsToView = ProductsList;
+        base.OnInitialized();
+    }
+
+
     private async Task<IEnumerable<string>> SearchFunc(string? value, CancellationToken token)
     {
-        if (value is null)
+        if (value is null) 
+        {
+            ProdcutsToView = ProductsList;
+            StateHasChanged();
             return [];
-        ProductsList = ProductsList.Where(x => x.Name.ToLower().Contains(value.ToLower()));
+        }
+        ProdcutsToView = ProductsList.Where(x => x.Name.ToLower().Contains(value.ToLower()));
+        StateHasChanged();
         return [];
     }
 }
